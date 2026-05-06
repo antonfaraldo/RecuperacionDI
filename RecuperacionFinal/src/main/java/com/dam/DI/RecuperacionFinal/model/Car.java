@@ -1,4 +1,4 @@
-package model;
+package com.dam.DI.RecuperacionFinal.model;
 
 import java.time.LocalDateTime;
 

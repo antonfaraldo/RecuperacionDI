@@ -1,4 +1,4 @@
-package model;
+package com.dam.DI.RecuperacionFinal.model;
 
 public class User {
 	private String username;
