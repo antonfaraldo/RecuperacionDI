@@ -1,13 +1,18 @@
 package com.dam.DI.RecuperacionFinal;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+import com.dam.DI.RecuperacionFinal.util.AppShell;
+import com.dam.DI.RecuperacionFinal.util.View;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class App extends Application {
+
+    @Override
+    public void start (Stage primaryStage) throws Exception {
+        AppShell.getInstance().init(primaryStage);
+        AppShell.getInstance().loadView(View.MAIN);
+    }
+    public static void main( String[] args ) {
+        launch(args);
     }
 }
