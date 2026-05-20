@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="20.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.DI.RecuperacionFinal.controller.UsersController">
+    <children>
+        <Label text="Panel de Administración de Usuarios">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colUsername" prefWidth="150.0" text="Usuario" />
+                <TableColumn fx:id="colEmail" prefWidth="250.0" text="Email" />
+                <TableColumn fx:id="colRole" prefWidth="120.0" text="Rol" />
+            </columns>
+        </TableView>
+    </children>
+</VBox>

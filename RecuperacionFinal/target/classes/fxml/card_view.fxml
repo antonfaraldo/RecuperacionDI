@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefWidth="240.0" spacing="10.0" style="-fx-background-color: #ffffff; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0); -fx-padding: 15;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.DI.RecuperacionFinal.controller.CardController">
+   <children>
+      <StackPane prefHeight="140.0" style="-fx-background-color: #e0e0e0; -fx-background-radius: 4;">
+         <children>
+            <Label text="Car Image" textFill="#757575" />
+         </children>
+      </StackPane>
+      
+      <VBox spacing="4.0">
+         <children>
+            <Label fx:id="lblBrandModel" text="Brand Model">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblSpecs" text="000 HP - Type" textFill="#616161" />
+         </children>
+      </VBox>
+      
+      <HBox alignment="CENTER_RIGHT">
+         <children>
+            <ToggleButton fx:id="btnFavorite" mnemonicParsing="false" text="❤ Favorite" style="-fx-cursor: hand;" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

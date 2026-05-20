@@ -5,8 +5,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dam.DI.RecuperacionFinal.dao.CarDAO;
+import com.dam.DI.RecuperacionFinal.dao.CarDAOImpl;
 import com.dam.DI.RecuperacionFinal.model.Car;
 
+import com.dam.DI.RecuperacionFinal.model.User;
+import com.dam.DI.RecuperacionFinal.util.AppShell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -22,17 +26,18 @@ public class CarsController {
     @FXML private TextField txtSearch; // Cuadro de busqueda
     @FXML private FlowPane carsContainer; // Contenedor de las tarjetas
     @FXML private ObservableList<Car> carObservableList = FXCollections.observableArrayList();
+
+    private final CarDAO carDAO = new CarDAOImpl();
     
     @FXML
     public void initialize() {
-        // Lista de prueba
-    	List<Car> mockCars = new ArrayList<>();
-    	mockCars.add(new Car(1, "Toyota", "Yaris", 116, "Compact", LocalDateTime.now(), "", false));
-    	mockCars.add(new Car(2, "Ford", "Mustang", 450, "Sports", LocalDateTime.now(), "", true));
-    	mockCars.add(new Car(3, "Audi", "A4", 204, "Sedan", LocalDateTime.now(), "", false));
-    	
-    	carObservableList.addAll(mockCars);
-    	
+        User currentUser = AppShell.getInstance().getSessionUser();
+        int userId = (currentUser != null) ?  currentUser.getId() : 0;
+
+        List<Car> realCars = carDAO.getAllCars(userId);
+
+        carObservableList.addAll(realCars);
+
     	// Lista filtrada vinculada a la lista observable
     	FilteredList<Car> filteredCars = new FilteredList<>(carObservableList, p -> true);
     	

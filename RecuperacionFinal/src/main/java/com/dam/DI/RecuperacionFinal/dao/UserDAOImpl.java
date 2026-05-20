@@ -46,6 +46,7 @@ public class UserDAOImpl implements UserDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     User loggedUser = new User();
+                    loggedUser.setId(rs.getInt("id"));
                     loggedUser.setUsername(rs.getString("username"));
                     loggedUser.setEmail(rs.getString("email"));
                     loggedUser.setRole(rs.getString("role"));

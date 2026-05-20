@@ -1,14 +1,23 @@
 package com.dam.DI.RecuperacionFinal.model;
 
 public class User {
+    private int id;
 	private String username;
 	private String email;
 	private String password;
 	private String role;
 	
 	public User() {}
-	
-	public String getUsername() {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
 		return username;
 	}
 
