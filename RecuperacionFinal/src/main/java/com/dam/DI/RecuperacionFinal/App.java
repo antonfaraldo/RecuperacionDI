@@ -10,7 +10,8 @@ public class App extends Application {
     @Override
     public void start (Stage primaryStage) throws Exception {
         AppShell.getInstance().init(primaryStage);
-        AppShell.getInstance().loadView(View.MAIN);
+        AppShell.getInstance().loadView(View.LOGIN);
+        AppShell.getInstance().adjustWindow();
     }
     public static void main( String[] args ) {
         launch(args);
