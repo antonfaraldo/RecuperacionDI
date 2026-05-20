@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 
 public class MainController {
     @FXML
-    private StackPane contentArea;
+    private StackPane contentArea; // Contenedor central
     @FXML
     private Button btnUsers;
     @FXML

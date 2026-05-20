@@ -17,6 +17,8 @@ public class AppShell {
     private Stage primaryStage;
     private Map<View, Object> controllers = new HashMap<>();
     private User sessionUser;
+    
+    
     private AppShell() {}
 
     public static AppShell getInstance() {
