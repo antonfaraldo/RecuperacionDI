@@ -1,5 +1,8 @@
 package com.dam.DI.RecuperacionFinal.controller;
 
+import com.dam.DI.RecuperacionFinal.dao.UserDAO;
+import com.dam.DI.RecuperacionFinal.dao.UserDAOImpl;
+import com.dam.DI.RecuperacionFinal.model.User;
 import com.dam.DI.RecuperacionFinal.util.AppShell;
 import com.dam.DI.RecuperacionFinal.util.View;
 
@@ -15,13 +18,15 @@ public class RegisterController {
 	@FXML private PasswordField txtConfirmPassword;
 	
 	@FXML private Label lblStatus;
+
+    private final UserDAO userDAO =  new UserDAOImpl();
 	
 	@FXML
 	private void handleRegister() {
-		String username = txtUsername.getText();
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
-        String confirmPassword = txtConfirmPassword.getText();
+		String username = txtUsername.getText().trim();
+        String email = txtEmail.getText().trim();
+        String password = txtPassword.getText().trim();
+        String confirmPassword = txtConfirmPassword.getText().trim();
         
         // Se comprueba si los campos estan vacios
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
@@ -43,9 +48,15 @@ public class RegisterController {
         	lblStatus.setText("Las contraseñas introducidas no coinciden.");
         	return;
         }
-        System.out.println(username + " registrado con éxito");
-        
-        navigateToLogin();
+        User newUser = new User(username, email, password, "user");
+
+        boolean success = userDAO.registerUser(newUser);
+        if (success) {
+            System.out.println(username + " registrado correctamente.");
+            navigateToLogin();
+        } else {
+            lblStatus.setText("El nombre de usuario ya existe.");
+        }
 	}
 
 	@FXML
