@@ -2,6 +2,8 @@ package com.dam.DI.RecuperacionFinal.controller;
 
 import com.dam.DI.RecuperacionFinal.util.AppShell;
 import com.dam.DI.RecuperacionFinal.util.View;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -13,7 +15,9 @@ public class MainController {
     private Button btnUsers;
     @FXML
     public void initialize() {
-        AppShell.getInstance().loadView(View.CARS);
+    	Platform.runLater(() -> {
+    		AppShell.getInstance().loadView(View.CARS);
+    	});
     }
 
     @FXML

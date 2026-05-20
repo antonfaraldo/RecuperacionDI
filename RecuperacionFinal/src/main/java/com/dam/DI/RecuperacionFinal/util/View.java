@@ -1,9 +1,10 @@
 package com.dam.DI.RecuperacionFinal.util;
 
 public enum View {
-    MAIN("/main-view.fxml"),
-    CARS("/cars_view.fxml"),
-    USERS("/users_view.fxml");
+    MAIN("fxml/main-view.fxml"),
+    CARS("fxml/cars_view.fxml"),
+    USERS("fxml/users_view.fxml"),
+	CARD("fxml/card_view.fxml");
 
 
     private final String fxmlPath;

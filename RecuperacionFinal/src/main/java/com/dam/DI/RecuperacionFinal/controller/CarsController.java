@@ -69,7 +69,7 @@ public class CarsController {
     	// Se cargan e  inyectan en cada tarjeta
     	for (Car car : carsToRender) {
     		try {
-    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/card_view.fxml"));
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/card_view.fxml"));
     			Parent cardNode = loader.load();
     			
     			// Se recupera el controlador de la tarjeta que asigna el coche

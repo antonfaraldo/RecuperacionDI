@@ -37,7 +37,7 @@ public class AppShell {
         stage.show();
     }
     public Object loadView(View view) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(view.getFxmlPath()));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/" + view.getFxmlPath()));
         try {
             Parent viewNode = loader.load();
             Object controller = loader.getController();
