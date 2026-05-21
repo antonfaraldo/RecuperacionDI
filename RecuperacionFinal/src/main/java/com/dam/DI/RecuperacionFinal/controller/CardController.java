@@ -20,6 +20,7 @@ public class CardController {
     private Car currentCar;
 	
 	public void setCarData(Car car) {
+		this.currentCar = car;
 		lblBrandModel.setText(car.getBrand() + " " + car.getModel());
 		lblSpecs.setText(car.getHorsePower() + " HP - " + car.getType());
 		btnFavorite.setSelected(car.isFavorite());

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -58,4 +60,29 @@ public class UserDAOImpl implements UserDAO {
         }
         return null;
     }
+
+	@Override
+	public List<User> getAllUsers() {
+		// TODO Auto-generated method stub
+		List<User> list = new ArrayList<>();
+		String query = "SELECT id, username, email, role FROM users";
+		
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(query);
+				ResultSet rs = stmt.executeQuery()) {
+			
+			while (rs.next()) {
+				User u = new User();
+				u.setId(rs.getInt("id"));
+				u.setUsername(rs.getString("username"));
+				u.setEmail(rs.getString("email"));
+				u.setRole(rs.getString("role"));
+				list.add(u);	
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println("Error SQL en getAllUsers: " + e.getMessage());
+		}
+		return list;
+	}
 }
