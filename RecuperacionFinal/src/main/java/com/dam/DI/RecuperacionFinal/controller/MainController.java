@@ -1,5 +1,6 @@
 package com.dam.DI.RecuperacionFinal.controller;
 
+import com.dam.DI.RecuperacionFinal.model.User;
 import com.dam.DI.RecuperacionFinal.util.AppShell;
 import com.dam.DI.RecuperacionFinal.util.View;
 
@@ -15,6 +16,16 @@ public class MainController {
     private Button btnUsers;
     @FXML
     public void initialize() {
+        User sessionUser = AppShell.getInstance().getSessionUser();
+
+        if (sessionUser != null){
+            // Si el usuario no es admin se oculta fisicamente el btn
+            if (!"admin".equals(sessionUser.getRole())){
+                btnUsers.setVisible(false);
+                btnUsers.setManaged(false);
+            }
+        }
+
     	Platform.runLater(() -> {
     		AppShell.getInstance().loadView(View.CARS);
     	});
@@ -30,6 +41,8 @@ public class MainController {
     }
     @FXML
     private void handleLogout() {
-        System.out.println("Loggin out...");
+        AppShell.getInstance().setSessionUser(null);
+        AppShell.getInstance().loadView(View.LOGIN);
+        AppShell.getInstance().adjustWindow();
     }
 }

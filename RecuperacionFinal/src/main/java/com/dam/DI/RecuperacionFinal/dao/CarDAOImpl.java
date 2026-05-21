@@ -49,4 +49,26 @@ public class CarDAOImpl implements CarDAO {
         }
         return carList;
     }
+
+    @Override
+    public boolean toggleFavorite(int userId, int carId, boolean isFavorite) {
+        String query = isFavorite
+                ? "INSERT INTO user_favorites (user_id, car_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE car_id = ?"
+                : "DELETE FROM user_favorites WHERE user_id = ? AND car_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, carId);
+
+            if (isFavorite) {
+                preparedStatement.setInt(3, carId);
+            }
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error SQL en toggleFavorite" + e.getMessage());
+            return false;
+        }
+    }
 }
