@@ -31,6 +31,7 @@ public class CarsController {
     @FXML private ObservableList<Car> carObservableList = FXCollections.observableArrayList();
 
     private final CarDAO carDAO = new CarDAOImpl();
+    private FilteredList<Car> filteredCars;
     
     @FXML
     public void initialize() {
@@ -48,7 +49,7 @@ public class CarsController {
          carObservableList.addAll(realCars);
 
     	// Lista filtrada vinculada a la lista observable
-    	FilteredList<Car> filteredCars = new FilteredList<>(carObservableList, p -> true);
+    	filteredCars = new FilteredList<>(carObservableList, p -> true);
     	
     	// Se añade un Listener
     	txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -70,10 +71,20 @@ public class CarsController {
         });
         renderCarCards(filteredCars);
     }
+
+    public void refreshCatalogData() {
+        User currentUser = AppShell.getInstance().getSessionUser();
+        int currentUserId = (currentUser != null) ?  currentUser.getId() : 0;
+        carObservableList.clear();
+        carObservableList.addAll(carDAO.getAllCars(currentUserId));
+        renderCarCards(filteredCars);
+    }
     	
 	private void renderCarCards(List<Car> carsToRender) {
 		// Se limpian las tarjetas
 		carsContainer.getChildren().clear();
+
+        Integer mostPopularCardId = carDAO.getMostPopularCarId();
 	
     	// Se cargan e  inyectan en cada tarjeta
     	for (Car car : carsToRender) {
@@ -83,7 +94,10 @@ public class CarsController {
     			
     			// Se recupera el controlador de la tarjeta que asigna el coche
     			CardController cardController = loader.getController();
-    			cardController.setCarData(car);
+    			cardController.setRefreshCallback(this::refreshCatalogData);
+
+                boolean isPopular = (mostPopularCardId != null && car.getId() == mostPopularCardId);
+                cardController.setCarData(car, isPopular);
     			
     			// Se añade el nodo visual al Flowpane
     			carsContainer.getChildren().add(cardNode);

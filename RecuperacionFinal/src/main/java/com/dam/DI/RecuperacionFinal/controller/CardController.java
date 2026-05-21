@@ -8,12 +8,14 @@ import com.dam.DI.RecuperacionFinal.model.Car;
 import com.dam.DI.RecuperacionFinal.model.User;
 import com.dam.DI.RecuperacionFinal.util.AppShell;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+import java.util.Optional;
 
 public class CardController {
+    @FXML private VBox cardRoot;
 	@FXML private Label lblBrandModel; // Marca y Modelo
 	@FXML private Label lblSpecs; // Especificaciones de potencia de motor y tipo de coche
    @FXML private Label lblRegistrationDate;
@@ -25,8 +27,13 @@ public class CardController {
 
     private CarDAO carDAO = new CarDAOImpl();
     private Car currentCar;
+    private Runnable refreshCallback;
+
+    public void setRefreshCallback(Runnable callback) {
+        this.refreshCallback = callback;
+    }
 	
-	public void setCarData(Car car) {
+	public void setCarData(Car car, boolean isMostPopular) {
 		this.currentCar = car;
 		lblBrandModel.setText(car.getBrand() + " " + car.getModel());
 		lblSpecs.setText(car.getHorsePower() + " HP - " + car.getType());
@@ -36,8 +43,18 @@ public class CardController {
         }
 
 		btnFavorite.setSelected(car.isFavorite());
-
         btnFavorite.setText(car.isFavorite() ? "❤ Favorited" : "🖤 Add Favorite");
+
+        cardRoot.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #cccccc; -fx-border-width: 1px; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);");
+
+        if (car.isFavorite()) {
+            cardRoot.setStyle("-fx-background-color: #f1f8e9; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #2e7d32; -fx-border-width: 2px; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(46,125,50,0.3), 12, 0, 0, 4);");
+        }
+
+        if (isMostPopular) {
+            cardRoot.setStyle("-fx-background-color: #fffde7; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #ffb300; -fx-border-width: 2.5px; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(255,179,0,0.4), 15, 0, 0, 5);");
+            lblBrandModel.setText("👑 " + car.getBrand() + " " + car.getModel() + " [LÍDER]");
+        }
 
         User currentUser = AppShell.getInstance().getSessionUser();
         if (currentUser == null || !"admin".equals(currentUser.getRole())) {
@@ -59,15 +76,96 @@ public class CardController {
                     currentCar.setFavorite(newState);
                     System.out.println("Coche ID " +  currentCar.getId() + " actualizado como favorito: " + newState);
                     btnFavorite.setText(newState ? "❤ Favorited" : "🖤 Add Favorite");
+
+                    if (refreshCallback != null) {
+                        refreshCallback.run();
+                    }
                 } else {
                     btnFavorite.setSelected(!newState);
                 }
             }
         });
 
-        btnDelete.setOnAction(e -> System.out.println("Admin solicita eliminar el coche con ID: " + currentCar.getId()));
-        btnUpdate.setOnAction(e -> System.out.println("Admin solicita editar el coche con ID: " + currentCar.getId()));
+        btnDelete.setOnAction(e -> {
+            if (currentCar == null) return;
 
+                Alert confirmAlert =  new Alert(Alert.AlertType.CONFIRMATION);
+                confirmAlert.setTitle("Confirmar Borrado");
+                confirmAlert.setHeaderText(null);
+                confirmAlert.setContentText("¿Está seguro de que desea eliminar permanentemente el coche: " + currentCar.getBrand() + " " + currentCar.getModel() + "?");
+
+                Optional<ButtonType> result = confirmAlert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    if (carDAO.deleteCar(currentCar.getId())) {
+                        showAlertDialog(Alert.AlertType.INFORMATION, "Éxito", "Vehículo eliminado correctamente del catálogo.");
+                        if (refreshCallback != null) {
+                            refreshCallback.run();
+                        }
+                    } else {
+                        showAlertDialog(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el vehículo de la base de datos.");
+                    }
+                }
+        });
+        btnUpdate.setOnAction(e -> {
+            if (currentCar == null) return;
+
+            TextInputDialog brandDialog = new TextInputDialog(currentCar.getBrand());
+            brandDialog.setTitle("Editar Vehículo");
+            brandDialog.setHeaderText("Modificando registro ID: " + currentCar.getId());
+            brandDialog.setContentText("Nueva Marca:");
+
+            Optional<String> brandOpt = brandDialog.showAndWait();
+            if (brandOpt.isPresent() && !brandOpt.get().trim().isEmpty()) {
+                String newBrand = brandOpt.get().trim();
+
+                TextInputDialog modelDialog = new TextInputDialog(currentCar.getModel());
+                modelDialog.setTitle("Editar Vehículo");
+                modelDialog.setContentText("Nuevo Modelo:");
+
+                Optional<String> modelOpt = modelDialog.showAndWait();
+                if (modelOpt.isPresent() && !modelOpt.get().trim().isEmpty()) {
+                    String newModel = modelOpt.get().trim();
+
+                    TextInputDialog hpDialog = new TextInputDialog(String.valueOf(currentCar.getHorsePower()));
+                    hpDialog.setTitle("Editar Vehículo");
+                    hpDialog.setContentText("Nueva Potencia (HP):");
+
+                    Optional<String> hpOpt = hpDialog.showAndWait();
+                    if (hpOpt.isPresent() && !hpOpt.get().trim().isEmpty()) {
+
+                        ChoiceDialog<String> typeDialog = new ChoiceDialog<>(currentCar.getType(), "Deportivo", "Berlina", "Compacto", "SUV", "Coupé");
+                        typeDialog.setTitle("Editar Vehículo");
+                        typeDialog.setContentText("Nuevo Tipo Segmento:");
+
+                        Optional<String> typeOpt = typeDialog.showAndWait();
+                        if (typeOpt.isPresent()) {
+                            try {
+                                int newHp = Integer.parseInt(hpOpt.get().trim());
+                                String newType = typeOpt.get();
+
+                                if (carDAO.updateCar(currentCar.getId(), newBrand, newModel, newHp, newType)) {
+                                    showAlertDialog(Alert.AlertType.INFORMATION, "Éxito", "Vehículo actualizado con éxito.");
+                                    if (refreshCallback != null) {
+                                        refreshCallback.run();
+                                    }
+                                }
+                            } catch (NumberFormatException ex) {
+                                showAlertDialog(Alert.AlertType.ERROR, "Error", "La potencia debe ser un número entero válido.");
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void showAlertDialog(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
 }

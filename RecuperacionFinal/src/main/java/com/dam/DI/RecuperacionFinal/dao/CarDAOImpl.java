@@ -87,4 +87,49 @@ public class CarDAOImpl implements CarDAO {
             return false;
         }
     }
+
+    @Override
+    public boolean deleteCar(int carId) {
+        String query = "DELETE FROM cars WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, carId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("SQL Error in deleteCar: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateCar(int carId, String brand, String model, int horsePower, String type) {
+        String query = "UPDATE cars SET brand = ?, model = ?, horse_power = ?, type = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, brand);
+            stmt.setString(2, model);
+            stmt.setInt(3, horsePower);
+            stmt.setString(4, type);
+            stmt.setInt(5, carId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("SQL Error in updateCar: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public Integer getMostPopularCarId() {
+        String query = "SELECT car_id, COUNT(*) AS total FROM user_favorites GROUP BY car_id ORDER BY total DESC LIMIT 1";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("car_id");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error in getMostPopularCarId: " + e.getMessage());
+        }
+        return null;
+    }
 }
