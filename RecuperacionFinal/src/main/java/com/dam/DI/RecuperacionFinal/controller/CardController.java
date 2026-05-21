@@ -24,6 +24,8 @@ public class CardController {
 		lblBrandModel.setText(car.getBrand() + " " + car.getModel());
 		lblSpecs.setText(car.getHorsePower() + " HP - " + car.getType());
 		btnFavorite.setSelected(car.isFavorite());
+
+        btnFavorite.setText(car.isFavorite() ? "❤ Favorited" : "🖤 Add Favorite");
 	}
 
     @FXML
@@ -38,6 +40,7 @@ public class CardController {
                 if (success) {
                     currentCar.setFavorite(newState);
                     System.out.println("Coche ID " +  currentCar.getId() + " actualizado como favorito: " + newState);
+                    btnFavorite.setText(newState ? "❤ Favorited" : "🖤 Add Favorite");
                 } else {
                     btnFavorite.setSelected(!newState);
                 }
