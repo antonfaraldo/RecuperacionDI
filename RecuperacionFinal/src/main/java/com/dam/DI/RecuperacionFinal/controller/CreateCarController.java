@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
+import java.io.File;
+
 public class CreateCarController {
     @FXML
     private TextField txtBrand;
@@ -41,6 +43,13 @@ public class CreateCarController {
             }
             try {
                 int hp = Integer.parseInt(horsePower);
+
+                if (!imageUrl.isEmpty() && !imageUrl.startsWith("http") && !imageUrl.startsWith("/")) {
+                    File localFile = new File(imageUrl);
+                    if (localFile.exists()) {
+                        imageUrl = localFile.toURI().toString();
+                    }
+                }
 
                 Car newCar = new Car();
                 newCar.setBrand(brand);
