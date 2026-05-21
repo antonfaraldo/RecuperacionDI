@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.DI.RecuperacionFinal.controller.MainController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.DI.RecuperacionFinal.controller.MainController">
     <top>
-        <VBox style="-fx-background-color: #2e7d32;">
-            <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-padding: 15;">
-                <Label text="APP GESTIÓN" textFill="WHITE">
+        <VBox style="-fx-background-color: #2e7d32; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 2);">
+            <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 12 20;">
+                <Label text="APP GESTIÓN" textFill="WHITE" style="-fx-padding: 0 10 0 0;">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Label>
-                <Button mnemonicParsing="false" onAction="#showCars" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand;" text="Coches" />
-                <Button fx:id="btnUsers" mnemonicParsing="false" onAction="#showUsers" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand;" text="Usuarios" />
+                <Button mnemonicParsing="false" onAction="#showCars" styleClass="nav-button" text="Coches" />
+                <Button fx:id="btnUsers" mnemonicParsing="false" onAction="#showUsers" styleClass="nav-button" text="Usuarios" />
                 <Region HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #1b5e20; -fx-text-fill: white;" text="Logout" />
+                <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="logout-button" text="Cerrar Sesión" />
             </HBox>
         </VBox>
     </top>
@@ -23,8 +24,8 @@
         <StackPane fx:id="contentArea" style="-fx-background-color: #f5f5f5;" />
     </center>
     <bottom>
-        <HBox alignment="CENTER" style="-fx-background-color: #2e7d32; -fx-padding: 10;">
-            <Label text="FOOTER ESTÁNDAR - PROYECTO RECUPERACIÓN DI" textFill="WHITE" />
+        <HBox alignment="CENTER" styleClass="footer-panel">
+            <Label styleClass="footer-text" text="© 2026 Sistema de Gestión de Vehículos — Panel de Control de Interfaces" />
         </HBox>
     </bottom>
 </BorderPane>

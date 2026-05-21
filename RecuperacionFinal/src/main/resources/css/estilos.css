@@ -24,3 +24,45 @@
     -fx-border-width: 2.5px !important;
     -fx-effect: dropshadow(three-pass-box, rgba(255,179,0,0.4), 15, 0, 0, 5) !important;
 }
+
+/* Pestañas de navegación superiores */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e8f5e9;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: #1b5e20; /* Verde oscuro de contraste al pasar el ratón */
+    -fx-text-fill: white;
+}
+
+/* Botón de Logout destacado */
+.logout-button {
+    -fx-background-color: #d32f2f; /* Rojo elegante */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: #b71c1c; /* Tono carmesí al pasar el ratón */
+}
+
+/* Panel inferior y textos del Footer */
+.footer-panel {
+    -fx-background-color: #212121; /* Gris oscuro para separar ambientes */
+    -fx-padding: 12;
+}
+
+.footer-text {
+    -fx-text-fill: #b0bec5; /* Tipografía ceniza clara muy elegante */
+    -fx-font-size: 12px;
+}
