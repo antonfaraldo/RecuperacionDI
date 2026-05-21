@@ -13,7 +13,8 @@
                     </font>
                 </Label>
                 <Region HBox.hgrow="ALWAYS" />
-                <TextField fx:id="txtSearch" prefWidth="250.0" promptText="Filtrar por marca o potencia..." />
+                <TextField fx:id="txtSearch" prefWidth="250.0" promptText="Filter by type (Sports, Sedan...)..." />
+                <Button fx:id="btnAddCar" text="Create Car" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" />
             </children>
         </HBox>
         <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">

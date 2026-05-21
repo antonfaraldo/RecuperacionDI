@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="20.0" style="-fx-padding: 30; -fx-alignment: TOP_CENTER;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.DI.RecuperacionFinal.controller.CreateCarController">
+    <children>
+        <Label text="Register New Catalog Vehicle">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font>
+        </Label>
+
+        <GridPane hgap="10.0" vgap="15.0" style="-fx-max-width: 400;">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="120.0" />
+                <ColumnConstraints prefWidth="280.0" hgrow="ALWAYS" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+            <children>
+                <Label text="Brand Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtBrand" promptText="e.g. Porsche" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Model Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtModel" promptText="e.g. 911 Carrera" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Horsepower (HP):" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtHorsePower" promptText="e.g. 450" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Vehicle Type:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="cmbType" prefWidth="280.0" promptText="Select segment..." GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            </children>
+        </GridPane>
+
+        <HBox spacing="15.0" alignment="CENTER" style="-fx-padding: 10 0 0 0;">
+            <children>
+                <Button fx:id="btnCancel" text="Cancel" prefWidth="100.0" style="-fx-background-color: #f44336; -fx-text-fill: white;" />
+                <Button fx:id="btnSave" text="Save Vehicle" prefWidth="120.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

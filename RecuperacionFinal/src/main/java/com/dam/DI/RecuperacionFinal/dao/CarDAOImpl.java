@@ -71,4 +71,20 @@ public class CarDAOImpl implements CarDAO {
             return false;
         }
     }
+
+    @Override
+    public boolean createCar(Car car) {
+        String query = "INSERT INTO cars (brand, model, horse_power, type) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, car.getBrand());
+            stmt.setString(2, car.getModel());
+            stmt.setInt(3, car.getHorsePower());
+            stmt.setString(4, car.getType());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("SQL Error in createCar: " + e.getMessage());
+            return false;
+        }
+    }
 }

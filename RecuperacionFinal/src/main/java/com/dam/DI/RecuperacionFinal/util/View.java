@@ -6,7 +6,8 @@ public enum View {
     USERS("fxml/users_view.fxml"),
 	CARD("fxml/card_view.fxml"),
 	LOGIN("fxml/login.fxml"),
-	REGISTER("fxml/register.fxml");
+	REGISTER("fxml/register.fxml"),
+    CREATECAR("fxml/create_car_view.fxml");
 
 
     private final String fxmlPath;
