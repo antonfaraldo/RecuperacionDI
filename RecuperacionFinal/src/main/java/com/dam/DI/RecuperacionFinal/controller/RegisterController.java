@@ -4,6 +4,7 @@ import com.dam.DI.RecuperacionFinal.dao.UserDAO;
 import com.dam.DI.RecuperacionFinal.dao.UserDAOImpl;
 import com.dam.DI.RecuperacionFinal.model.User;
 import com.dam.DI.RecuperacionFinal.util.AppShell;
+import com.dam.DI.RecuperacionFinal.util.PasswordUtil;
 import com.dam.DI.RecuperacionFinal.util.View;
 
 import javafx.fxml.FXML;
@@ -48,7 +49,15 @@ public class RegisterController {
         	lblStatus.setText("Las contraseñas introducidas no coinciden.");
         	return;
         }
-        User newUser = new User(username, email, password, "user");
+        
+        // Se encripta la contraseña
+        String hashedPassword = PasswordUtil.hashPassword(password);
+        
+        // DEBUG
+        System.out.println("UI Test - Contraseña original: " + password);
+        System.out.println("UI Test - Hash BCrypt generado para enviar a MySQL: " + hashedPassword);
+        
+        User newUser = new User(username, email, hashedPassword, "user");
 
         boolean success = userDAO.registerUser(newUser);
         if (success) {
