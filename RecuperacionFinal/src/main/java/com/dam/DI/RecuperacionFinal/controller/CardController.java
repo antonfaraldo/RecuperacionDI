@@ -50,7 +50,11 @@ public class CardController {
 
         if (car.getImageUrl() != null && !car.getImageUrl().trim().isEmpty()) {
             try {
-              imgCar.setImage(new Image(car.getImageUrl(), true));
+                if (car.getImageUrl().startsWith("/")) {
+                    imgCar.setImage(new Image(getClass().getResourceAsStream(car.getImageUrl())));
+                } else {
+                    imgCar.setImage(new Image(car.getImageUrl(), true));
+                }
             } catch (Exception e){
                 imgCar.setImage(new Image("https://placehold.co/400x250?text=No+Image"));
             }
@@ -156,16 +160,16 @@ public class CardController {
                         if (typeOpt.isPresent()) {
                             TextInputDialog imgDialog = new TextInputDialog(currentCar.getImageUrl() != null ?  currentCar.getImageUrl() : "");
                             imgDialog.setTitle("Editar Vehículo");
-                            imgDialog.setContentText("Nueva URL de Imagen:");
+                            imgDialog.setContentText("Nueva URL de Imagen o Ruta Local:");
 
                             Optional<String> imgOpt = imgDialog.showAndWait();
                             if (imgOpt.isPresent()) {
                             try {
                                 int newHp = Integer.parseInt(hpOpt.get().trim());
                                 String newType = typeOpt.get();
-                                String newImg = imgOpt.get().trim().isEmpty() ? null : imgOpt.get().trim();
+                                String newImgUrl = imgOpt.get().trim();
 
-                                if (carDAO.updateCar(currentCar.getId(), newBrand, newModel, newHp, newType, newImg)) {
+                                if (carDAO.updateCar(currentCar.getId(), newBrand, newModel, newHp, newType, newImgUrl)) {
                                     Alert inforAlert = new Alert (Alert.AlertType.INFORMATION, "Vehículo actualizado con éxito.", ButtonType.OK);
                                     inforAlert.setTitle("Exito");
                                     inforAlert.setHeaderText(null);
