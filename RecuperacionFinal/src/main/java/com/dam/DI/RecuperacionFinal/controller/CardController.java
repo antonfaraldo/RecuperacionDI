@@ -46,7 +46,7 @@ public class CardController {
         }
 
 		btnFavorite.setSelected(car.isFavorite());
-        btnFavorite.setText(car.isFavorite() ? "❤ Favorited" : "🖤 Add Favorite");
+        btnFavorite.setText(car.isFavorite() ? "❤ Favorito" : "🖤 Añadir como Favorito");
 
         if (car.getImageUrl() != null && !car.getImageUrl().trim().isEmpty()) {
             try {
@@ -58,17 +58,16 @@ public class CardController {
             imgCar.setImage(new Image("https://placehold.co/400x250?text=No+Image"));
         }
 
-        // Estilo de las cards normales
-        cardRoot.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #cccccc; -fx-border-width: 1px; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);");
+        cardRoot.getStyleClass().removeAll("favorite-card", "most-popular-card");
 
         // el coche favorito de cada usuario tiene el borde verde
         if (car.isFavorite()) {
-            cardRoot.setStyle("-fx-background-color: #f1f8e9; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #2e7d32; -fx-border-width: 2px; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(46,125,50,0.3), 12, 0, 0, 4);");
+            cardRoot.getStyleClass().add("favorite-card");
         }
 
         // el coche mas popular tiene el bord oro y una corona
         if (isMostPopular) {
-            cardRoot.setStyle("-fx-background-color: #fffde7; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #ffb300; -fx-border-width: 2.5px; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(255,179,0,0.4), 15, 0, 0, 5);");
+            cardRoot.getStyleClass().add("most-popular-card");
             lblBrandModel.setText("👑 " + car.getBrand() + " " + car.getModel() + " [LÍDER]");
         }
 

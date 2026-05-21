@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 INSERT INTO users (username, email, password, role) VALUES 
-('admin', 'admin@gestorcoches.com', 'admin123', 'admin');
+('admin', 'admin@gestorcoches.com', '$2a$10$mC7p3Wsh37P.K6OmsA2K9e1R2wXhF1G6HhL9L8P5oT4FGeZcGe7q.', 'admin');
 
 CREATE TABLE IF NOT EXISTS cars (
     id INT AUTO_INCREMENT PRIMARY KEY,

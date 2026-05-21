@@ -17,8 +17,8 @@ public class AppShell {
     private Stage primaryStage;
     private Map<View, Object> controllers = new HashMap<>();
     private User sessionUser;
-    
-    
+
+
     private AppShell() {}
 
     public static AppShell getInstance() {
@@ -43,7 +43,7 @@ public class AppShell {
             Object controller = loader.getController();
             controllers.put(view, controller);
 
-            if (view == View.MAIN) {
+            if (view == View.MAIN || view == View.LOGIN || view == View.REGISTER) {
                 primaryStage.setScene(new Scene(viewNode));
             } else {
                 Parent currentroot = primaryStage.getScene().getRoot();

@@ -74,7 +74,7 @@ public class CarDAOImpl implements CarDAO {
 
     @Override
     public boolean createCar(Car car) {
-        String query = "INSERT INTO cars (brand, model, horse_power, type, image_url) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO cars (brand, model, horse_power, type, image_url) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, car.getBrand());
