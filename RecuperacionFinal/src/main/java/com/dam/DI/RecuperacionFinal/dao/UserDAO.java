@@ -8,4 +8,8 @@ public interface UserDAO {
     boolean registerUser(User user);
     User loginUser(String username, String password);
     List<User> getAllUsers();
+
+    boolean deleteUser(int id);
+    boolean updateUserRole(int id, String role);
+    boolean updateUserDetails(int id, String username, String email);
 }

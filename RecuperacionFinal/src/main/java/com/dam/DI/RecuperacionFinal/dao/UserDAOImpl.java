@@ -99,4 +99,46 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return list;
 	}
+
+    @Override
+    public boolean deleteUser(int id) {
+        String query = "DELETE FROM users WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error SQL en deleteUser: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateUserRole(int id, String role) {
+        String query = "UPDATE users SET role = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, role);
+            stmt.setInt(2, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error SQL en updateUserRole: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateUserDetails(int id, String username, String email) {
+        String query = "UPDATE users SET username = ?, email = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            stmt.setInt(3, id);
+            return  stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error SQL en updateUserDetails: " + e.getMessage());
+            return false;
+        }
+    }
 }
