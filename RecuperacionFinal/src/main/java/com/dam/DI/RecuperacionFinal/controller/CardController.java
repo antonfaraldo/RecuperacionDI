@@ -9,6 +9,8 @@ import com.dam.DI.RecuperacionFinal.model.User;
 import com.dam.DI.RecuperacionFinal.util.AppShell;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 public class CardController {
     @FXML private VBox cardRoot;
+    @FXML private ImageView imgCar;
 	@FXML private Label lblBrandModel; // Marca y Modelo
 	@FXML private Label lblSpecs; // Especificaciones de potencia de motor y tipo de coche
    @FXML private Label lblRegistrationDate;
@@ -45,12 +48,25 @@ public class CardController {
 		btnFavorite.setSelected(car.isFavorite());
         btnFavorite.setText(car.isFavorite() ? "❤ Favorited" : "🖤 Add Favorite");
 
+        if (car.getImageUrl() != null && !car.getImageUrl().trim().isEmpty()) {
+            try {
+              imgCar.setImage(new Image(car.getImageUrl(), true));
+            } catch (Exception e){
+                imgCar.setImage(new Image("https://placehold.co/400x250?text=No+Image"));
+            }
+        } else {
+            imgCar.setImage(new Image("https://placehold.co/400x250?text=No+Image"));
+        }
+
+        // Estilo de las cards normales
         cardRoot.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #cccccc; -fx-border-width: 1px; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);");
 
+        // el coche favorito de cada usuario tiene el borde verde
         if (car.isFavorite()) {
             cardRoot.setStyle("-fx-background-color: #f1f8e9; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #2e7d32; -fx-border-width: 2px; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(46,125,50,0.3), 12, 0, 0, 4);");
         }
 
+        // el coche mas popular tiene el bord oro y una corona
         if (isMostPopular) {
             cardRoot.setStyle("-fx-background-color: #fffde7; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #ffb300; -fx-border-width: 2.5px; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(255,179,0,0.4), 15, 0, 0, 5);");
             lblBrandModel.setText("👑 " + car.getBrand() + " " + car.getModel() + " [LÍDER]");
@@ -139,18 +155,32 @@ public class CardController {
 
                         Optional<String> typeOpt = typeDialog.showAndWait();
                         if (typeOpt.isPresent()) {
+                            TextInputDialog imgDialog = new TextInputDialog(currentCar.getImageUrl() != null ?  currentCar.getImageUrl() : "");
+                            imgDialog.setTitle("Editar Vehículo");
+                            imgDialog.setContentText("Nueva URL de Imagen:");
+
+                            Optional<String> imgOpt = imgDialog.showAndWait();
+                            if (imgOpt.isPresent()) {
                             try {
                                 int newHp = Integer.parseInt(hpOpt.get().trim());
                                 String newType = typeOpt.get();
+                                String newImg = imgOpt.get().trim().isEmpty() ? null : imgOpt.get().trim();
 
-                                if (carDAO.updateCar(currentCar.getId(), newBrand, newModel, newHp, newType)) {
-                                    showAlertDialog(Alert.AlertType.INFORMATION, "Éxito", "Vehículo actualizado con éxito.");
+                                if (carDAO.updateCar(currentCar.getId(), newBrand, newModel, newHp, newType, newImg)) {
+                                    Alert inforAlert = new Alert (Alert.AlertType.INFORMATION, "Vehículo actualizado con éxito.", ButtonType.OK);
+                                    inforAlert.setTitle("Exito");
+                                    inforAlert.setHeaderText(null);
+                                    inforAlert.showAndWait();
                                     if (refreshCallback != null) {
                                         refreshCallback.run();
                                     }
                                 }
                             } catch (NumberFormatException ex) {
-                                showAlertDialog(Alert.AlertType.ERROR, "Error", "La potencia debe ser un número entero válido.");
+                                Alert errorAlert = new Alert(Alert.AlertType.ERROR, "La potencia debe ser un número entero válido.", ButtonType.OK);
+                                errorAlert.setTitle("Error");
+                                errorAlert.setHeaderText(null);
+                                errorAlert.showAndWait();
+                            }
                             }
                         }
                     }

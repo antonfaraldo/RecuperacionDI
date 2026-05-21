@@ -22,7 +22,7 @@
                 <RowConstraints />
                 <RowConstraints />
                 <RowConstraints />
-            </rowConstraints>
+                <RowConstraints /> </rowConstraints>
             <children>
                 <Label text="Brand Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                 <TextField fx:id="txtBrand" promptText="e.g. Porsche" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
@@ -35,6 +35,9 @@
 
                 <Label text="Vehicle Type:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                 <ComboBox fx:id="cmbType" prefWidth="280.0" promptText="Select segment..." GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="URL de Imagen:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtImageUrl" promptText="http://enlace-de-la-foto.jpg" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
             </children>
         </GridPane>
 

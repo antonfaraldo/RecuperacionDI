@@ -17,6 +17,7 @@ public class CreateCarController {
     @FXML private TextField txtModel;
     @FXML private TextField txtHorsePower;
     @FXML private ComboBox<String> cmbType;
+    @FXML private TextField txtImageUrl;
     @FXML private Button btnSave;
     @FXML private Button btnCancel;
 
@@ -32,6 +33,7 @@ public class CreateCarController {
             String model = txtModel.getText().trim();
             String horsePower = txtHorsePower.getText().trim();
             String type = cmbType.getValue();
+            String imageUrl = txtImageUrl.getText().trim();
 
             if (brand.isEmpty() || model.isEmpty() || horsePower.isEmpty() || type == null ) {
                 showModalAlert(Alert.AlertType.WARNING, "Campos Obligatorios", "Por favor rellena todos los campos");
@@ -45,6 +47,7 @@ public class CreateCarController {
                 newCar.setModel(model);
                 newCar.setHorsePower(hp);
                 newCar.setType(type);
+                newCar.setImageUrl(imageUrl.isEmpty() ? null : imageUrl);
 
                 if (carDAO.createCar(newCar)) {
                     showModalAlert(Alert.AlertType.INFORMATION, "Éxito", "Vehículo añadido correctamente al catálogo.");

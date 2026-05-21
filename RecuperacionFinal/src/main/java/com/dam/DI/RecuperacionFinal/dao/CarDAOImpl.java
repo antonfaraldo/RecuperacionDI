@@ -74,13 +74,14 @@ public class CarDAOImpl implements CarDAO {
 
     @Override
     public boolean createCar(Car car) {
-        String query = "INSERT INTO cars (brand, model, horse_power, type) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO cars (brand, model, horse_power, type, image_url) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, car.getBrand());
             stmt.setString(2, car.getModel());
             stmt.setInt(3, car.getHorsePower());
             stmt.setString(4, car.getType());
+            stmt.setString(5, car.getImageUrl());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("SQL Error in createCar: " + e.getMessage());
@@ -102,15 +103,16 @@ public class CarDAOImpl implements CarDAO {
     }
 
     @Override
-    public boolean updateCar(int carId, String brand, String model, int horsePower, String type) {
-        String query = "UPDATE cars SET brand = ?, model = ?, horse_power = ?, type = ? WHERE id = ?";
+    public boolean updateCar(int carId, String brand, String model, int horsePower, String type, String imageUrl) {
+        String query = "UPDATE cars SET brand = ?, model = ?, horse_power = ?, type = ?, image_url = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, brand);
             stmt.setString(2, model);
             stmt.setInt(3, horsePower);
             stmt.setString(4, type);
-            stmt.setInt(5, carId);
+            stmt.setString(5, imageUrl);
+            stmt.setInt(6, carId);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("SQL Error in updateCar: " + e.getMessage());

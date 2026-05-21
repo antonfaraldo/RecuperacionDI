@@ -9,6 +9,6 @@ public interface CarDAO {
     boolean toggleFavorite(int userId, int carId, boolean favorite);
     boolean createCar(Car car);
     boolean deleteCar(int carId);
-    boolean updateCar(int carId, String brand, String model, int horsePower, String type);
+    boolean updateCar(int carId, String brand, String model, int horsePower, String type, String imageUrl);
     Integer getMostPopularCarId();
 }
