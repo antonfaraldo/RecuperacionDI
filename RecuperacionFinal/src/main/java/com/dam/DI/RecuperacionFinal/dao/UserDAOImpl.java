@@ -69,8 +69,10 @@ public class UserDAOImpl implements UserDAO {
 	public List<User> getAllUsers() {
 		// TODO Auto-generated method stub
 		List<User> list = new ArrayList<>();
-		String query = "SELECT id, username, email, role FROM users";
-		
+		String query = "SELECT u.id, u.username, u.email, u.password, u.role, f.car_id " +
+                        " FROM users u " +
+                        "LEFT JOIN user_favorites f ON u.id = f.user_id";
+
 		try (Connection conn = DatabaseConnection.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(query);
 				ResultSet rs = stmt.executeQuery()) {
@@ -80,7 +82,15 @@ public class UserDAOImpl implements UserDAO {
 				u.setId(rs.getInt("id"));
 				u.setUsername(rs.getString("username"));
 				u.setEmail(rs.getString("email"));
+                u.setPassword(rs.getString("password"));
 				u.setRole(rs.getString("role"));
+
+                int carId = rs.getInt("car_id");
+                if (!rs.wasNull()) {
+                    u.setFavoriteCarId(carId);
+                } else {
+                    u.setFavoriteCarId(null);
+                }
 				list.add(u);	
 			}
 		} catch (Exception e) {

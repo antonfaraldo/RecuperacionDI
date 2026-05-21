@@ -6,7 +6,8 @@ public class User {
 	private String email;
 	private String password;
 	private String role;
-	
+
+    private Integer favoriteCarId;
 	public User() {}
 
     public int getId() {
@@ -15,6 +16,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Integer getFavoriteCarId() {
+        return favoriteCarId;
+    }
+
+    public void setFavoriteCarId(Integer favoriteCarId) {
+        this.favoriteCarId = favoriteCarId;
     }
 
     public String getUsername() {
