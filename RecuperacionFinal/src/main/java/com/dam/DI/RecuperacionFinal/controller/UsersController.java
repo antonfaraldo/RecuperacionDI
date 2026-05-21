@@ -160,7 +160,18 @@ public class UsersController {
                     Optional<String> passOpt = passDialog.showAndWait();
 
                     if (passOpt.isPresent() && !passOpt.get().trim().isEmpty()) {
-                        String securedHash = PasswordUtil.hashPassword(passOpt.get().trim());
+                        String password = passOpt.get().trim();
+
+                        if (password.length() < 6) {
+                            showAlerDialog(Alert.AlertType.WARNING, "Contraseña Débil", "La contraseña debe tener al menos 6 caracteres.");
+                            return;
+                        }
+                        if (!password.matches(".*[a-zA-Z].*") || !password.matches(".*\\d.*")) {
+                            showAlerDialog(Alert.AlertType.WARNING, "Contraseña Débil", "La contraseña debe contener obligatoriamente letras y números");
+                            return;
+                        }
+
+                        String securedHash = PasswordUtil.hashPassword(password);
                         User newUser = new User(username, email, securedHash, "user");
 
                         if (userDAO.registerUser(newUser)) {
