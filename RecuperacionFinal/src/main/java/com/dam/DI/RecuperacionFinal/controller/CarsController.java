@@ -1,6 +1,6 @@
 package com.dam.DI.RecuperacionFinal.controller;
 
-import java.io.IOException;
+import java.io.IOException; 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +31,20 @@ public class CarsController {
     
     @FXML
     public void initialize() {
-        User currentUser = AppShell.getInstance().getSessionUser();
-        int userId = (currentUser != null) ?  currentUser.getId() : 0;
+    	try {
+    		 User currentUser = AppShell.getInstance().getSessionUser();
+	         int currentUserId = (currentUser != null) ?  currentUser.getId() : 0;
 
-        List<Car> realCars = carDAO.getAllCars(userId);
-
-        carObservableList.addAll(realCars);
-
+	         List<Car> realCars = carDAO.getAllCars(currentUserId);
+	         
+	         if (realCars != null && !realCars.isEmpty()) {
+	        	 carObservableList.addAll(realCars);
+	         } 
+    	} catch (Exception e) {
+			// TODO: handle exception
+    		System.err.println("Error loading cars from database: " + e.getMessage());
+		}
+    	
     	// Lista filtrada vinculada a la lista observable
     	FilteredList<Car> filteredCars = new FilteredList<>(carObservableList, p -> true);
     	

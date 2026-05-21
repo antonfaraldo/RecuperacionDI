@@ -2,6 +2,7 @@ package com.dam.DI.RecuperacionFinal.dao;
 
 import com.dam.DI.RecuperacionFinal.model.User;
 import com.dam.DI.RecuperacionFinal.util.DatabaseConnection;
+import com.dam.DI.RecuperacionFinal.util.PasswordUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,22 +38,25 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User loginUser(String username, String password) {
-        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+        String query = "SELECT * FROM users WHERE username = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, username);
-            stmt.setString(2, password);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    User loggedUser = new User();
-                    loggedUser.setId(rs.getInt("id"));
-                    loggedUser.setUsername(rs.getString("username"));
-                    loggedUser.setEmail(rs.getString("email"));
-                    loggedUser.setRole(rs.getString("role"));
-                    return loggedUser;
+                	String hashedPasswordFromDB = rs.getString("password");
+                	
+                	if (PasswordUtil.checkPassword(password, hashedPasswordFromDB)) {
+	                    User loggedUser = new User();
+	                    loggedUser.setId(rs.getInt("id"));
+	                    loggedUser.setUsername(rs.getString("username"));
+	                    loggedUser.setEmail(rs.getString("email"));
+	                    loggedUser.setRole(rs.getString("role"));
+	                    return loggedUser;
+                	}
                 }
             }
         } catch (SQLException e) {
